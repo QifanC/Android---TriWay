@@ -20,9 +20,8 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven {
-            url "https://sdk-repo.sygic.com/NAVI-SDK-stage/"
-        }
+        maven { url 'https://esri.bintray.com/arcgis' }
+
 
     }
 }

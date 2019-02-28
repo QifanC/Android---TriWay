@@ -2,6 +2,7 @@ package com.triplec.triway;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -21,8 +22,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.esri.arcgisruntime.concurrent.ListenableFuture;
+import com.esri.arcgisruntime.geometry.Point;
+import com.esri.arcgisruntime.loadable.LoadStatus;
+import com.esri.arcgisruntime.mapping.Viewpoint;
+import com.esri.arcgisruntime.mapping.view.Graphic;
+import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
+import com.esri.arcgisruntime.symbology.SimpleMarkerSymbol;
+import com.esri.arcgisruntime.tasks.geocode.GeocodeParameters;
+import com.esri.arcgisruntime.tasks.geocode.GeocodeResult;
+import com.esri.arcgisruntime.tasks.geocode.LocatorTask;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,6 +51,8 @@ public class HomeActivity extends AppCompatActivity
     EditText search;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     SharedPreferences sp;
+    private GeocodeParameters mGeocodeParameters = null;
+    private GraphicsOverlay mGraphicsOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +105,48 @@ public class HomeActivity extends AppCompatActivity
                 return handled;
             }
         });
+        final LocatorTask onlineLocator = new LocatorTask("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
+        onlineLocator.addDoneLoadingListener(new Runnable() {
+             @Override
+             public void run() {
+                 if (onlineLocator.getLoadStatus() == LoadStatus.LOADED) {
+                     if (onlineLocator.getLocatorInfo().isSupportsPoi()) {
+                         Point mapCenter = new Point(37.7157, 117.1611);
+                         GeocodeParameters geocodeParams = new GeocodeParameters();
+                         geocodeParams.setMaxResults(5);
+                         geocodeParams.setPreferredSearchLocation(mapCenter);
+                         geocodeParams.getCategories().add("Tourist Attraction");
+                         List<String> resultAttributeNames = geocodeParams.getResultAttributeNames();
+                         resultAttributeNames.add("Place_addr");
+                         resultAttributeNames.add("Phone");
+                         resultAttributeNames.add("Distance");
+                         final ListenableFuture<List<GeocodeResult>> geocodeFuture = onlineLocator.geocodeAsync("", geocodeParams);
+                         geocodeFuture.addDoneListener(new Runnable() {
+                             @Override
+                             public void run() {
+                                 try {
+                                     List<GeocodeResult> geocodeResults = geocodeFuture.get();
+                                     for (GeocodeResult result : geocodeResults) {
+//                            System.out.println(result.getDisplayLocation(), result.getAttributes());
+                                         System.out.println(result.getLabel() + result.getInputLocation().toString());
+                                     }
+                                 } catch (InterruptedException | ExecutionException e) {
+                                     System.err.println("erere"); // deal with exception appropriately...
+                                 }
+                             }
+                         });
+                     }
+                 } else {
+                     System.err.println("shit");
+                 }
+             }
+         });
+        onlineLocator.loadAsync();
+        if (onlineLocator.getLocatorInfo() == null) {
 
-        //TODO: delete after done testing
+        }
+
+                    //TODO: delete after done testing
         //removeItem(R.id.nav_plan2);
         //addItem("New plan");
     }
