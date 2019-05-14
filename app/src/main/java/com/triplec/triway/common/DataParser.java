@@ -1,7 +1,5 @@
 package com.triplec.triway.common;
 
-
-
 import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.triplec.triway.route;
+package com.triplec.triway;
 
 import android.content.Context;
 

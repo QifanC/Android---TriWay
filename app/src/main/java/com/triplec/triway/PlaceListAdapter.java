@@ -117,4 +117,8 @@ public class PlaceListAdapter extends ArrayAdapter<TriPlace> {
         notifyDataSetChanged();
     }
 
+//    public void notifyDataSetChanged(){
+//
+//    }
+
 }

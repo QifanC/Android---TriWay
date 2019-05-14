@@ -64,7 +64,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
+/**
+ * The main search page along with the image that leads user into suggested plan
+ */
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -274,6 +276,11 @@ public class HomeActivity extends AppCompatActivity
         isclicked = false;
     }
 
+    /**
+     *
+     * @param item is the image of tour shown as slide view, each one could lead you into a plan
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -311,6 +318,10 @@ public class HomeActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    /**
+     * lead user into RouteActivity, show result that triWay has
+     * @param place is where the user search
+     */
     public void gotoRoute(String place) {
         if( isclicked ){
             return;

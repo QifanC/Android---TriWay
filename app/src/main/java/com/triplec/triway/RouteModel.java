@@ -1,4 +1,4 @@
-package com.triplec.triway.route;
+package com.triplec.triway;
 
 import android.content.Context;
 import android.location.Address;
@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.triplec.triway.R;
 import com.triplec.triway.common.DataParser;
 import com.triplec.triway.common.RoutePlanner;
 import com.triplec.triway.common.TriPlace;
@@ -52,6 +51,7 @@ class RouteModel implements RouteContract.Model {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private Geocoder coder;
+
     RouteModel() {
         placesRequestApi = RetrofitClient.getInstance().create(PlaceRequestApi.class);
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -114,7 +114,7 @@ class RouteModel implements RouteContract.Model {
                 TriPlan sortedPlan = planner.planRoute(); // sorted plan by algorithm
 
                 mTriPlan = sortedPlan;
-                presenter.showRoutes(sortedPlan);
+                presenter.showRoutes(sortedPlan);//TODO MVP ROUTES
             }
 
             @Override
@@ -192,7 +192,7 @@ class RouteModel implements RouteContract.Model {
     public boolean addPlace(TriPlace newPlace) {
         // TODO add place to current plan
         mTriPlan.getPlaceList().add(newPlace);
-        presenter.showRoutes(mTriPlan);
+        presenter.showRoutes(mTriPlan);  //TODO MVP ROUTES
         return true;
     }
     /* following helper methods from: https://github.com/hiteshbpatel/Android_Blog_Projects*/
@@ -422,4 +422,12 @@ class RouteModel implements RouteContract.Model {
     public void setPresenter(RouteContract.Presenter presenter) {
         this.presenter = presenter;
     }
+
+    public TriPlan getTriPlan(){
+        return mTriPlan;
+    }
+
+
+
+
 }

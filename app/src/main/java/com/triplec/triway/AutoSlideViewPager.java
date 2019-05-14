@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 /**
  * Auto scrolling and recycling ViewPager
  * Source: https://www.jianshu.com/p/58f356eaa6e9
+ * Purpose: provide some images of views in the search page, eye candy
+ *
  * @param <T>
  */
 public class AutoSlideViewPager<T extends PagerAdapter> extends FrameLayout {

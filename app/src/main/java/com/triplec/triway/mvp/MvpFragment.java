@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+/**
+ *  Make another one as activity
+ * @param <P>
+ */
 public abstract class MvpFragment<P extends  MvpContract.Presenter>
                                 extends Fragment implements MvpContract.View<P> {
 
@@ -27,7 +31,9 @@ public abstract class MvpFragment<P extends  MvpContract.Presenter>
         }
     }
 
-
+    /**
+     * keyword: lifecycle
+     */
     @Override
     public void onStop() {
         super.onStop();

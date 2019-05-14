@@ -62,6 +62,9 @@ import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * account login page with multiple platform options
+ */
 public class LoginActivity extends AppCompatActivity implements SessionTimeoutListener{
     private static final int RC_SIGN_IN = 9001;
     private TextInputEditText mail_et, password_et;
